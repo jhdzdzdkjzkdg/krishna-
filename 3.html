@@ -1,0 +1,364 @@
+
+
+
+
+
+
+
+
+  <!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Instagram Login - Ultra Cool Light Toggle</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap');
+    /* Reset & basics */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0; padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #333;
+      transition: background 1.7s ease;
+      position: relative;
+    }
+
+    /* PARTICLES container */
+    .particles {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,215,28,0.8) 0%, rgba(249,215,28,0.0) 70%);
+      animation-timing-function: ease-in-out;
+      filter: drop-shadow(0 0 5px #f9d71c);
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    /* animate multiple particles with different sizes and animation */
+    /* JS will generate particles */
+
+    /* container of the form */
+    .container {
+      background: #fff;
+      width: 380px;
+      padding: 48px 45px 75px;
+      border-radius: 22px;
+      box-shadow: 0 6px 38px rgba(249, 215, 28, 0.35);
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      transition: box-shadow 1.2s ease;
+    }
+    body.light-on .container {
+      box-shadow:
+        0 0 40px 15px #f9d71cdd,
+        0 15px 55px 15px #f9d71cbb,
+        0 30px 80px 10px #f9d71c99;
+    }
+
+    /* Instagram style logo with Pacifico font */
+    .logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 60px;
+      color: #262626;
+      user-select: none;
+      margin-bottom: 32px;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 6px rgba(249,215,28,0.35);
+    }
+
+    /* forms and inputs */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input[type="text"], input[type="password"] {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      padding: 16px 18px;
+      margin: 10px 0 20px;
+      border-radius: 9px;
+      border: 2px solid #dedede;
+      background: #fefefe;
+      box-shadow:
+        inset 0 1px 6px #fbf9f9,
+        0 2px 3px rgba(0,0,0,0.03);
+      transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+      color: #222;
+      outline-offset: 2px;
+      outline-color: transparent;
+      user-select: text;
+      text-shadow: 0 0 1px #fff;
+    }
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: #999;
+      font-weight: 400;
+      font-size: 15px;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #f9d71c;
+      background: #fffdf3;
+      box-shadow:
+        0 0 12px 3px #f9d71caa,
+        inset 0 0 12px 2px #f9d71c88;
+      outline-color: #f9d71ccc;
+      outline-style: solid;
+      outline-width: 2.5px;
+      transition:
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+    }
+
+    /* button style */
+    button {
+      margin-top: 18px;
+      padding: 16px 0;
+      font-weight: 700;
+      font-size: 17px;
+      color: white;
+      background: linear-gradient(90deg, #f9d71c, #f2bb13);
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      box-shadow:
+        0 6px 22px rgba(249, 215, 28, 0.6);
+      transition:
+        background 0.35s ease,
+        box-shadow 0.35s ease,
+        transform 0.25s ease;
+      user-select: none;
+      filter: drop-shadow(0 0 2px #f9d71cee);
+    }
+    button:hover,
+    button:focus {
+      background: linear-gradient(90deg, #f2bb13, #f9d71c);
+      box-shadow:
+        0 8px 32px rgba(249, 215, 28, 0.9);
+      transform: scale(1.07);
+      outline: none;
+    }
+    button:active {
+      transform: scale(0.95);
+      box-shadow:
+        0 3px 14px rgba(249, 215, 28, 0.35);
+    }
+
+    /* light container */
+    .light-container {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* the glowing circle */
+    .light {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      background: #f1f1f1;
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 45px #bbb,
+        0 0 0 rgba(249, 215, 28, 0);
+      transition:
+        background-color 0.8s ease,
+        box-shadow 1.2s ease;
+      filter: drop-shadow(0 0 5px #f4d964);
+      cursor: default;
+      user-select: none;
+    }
+    .light.on {
+      background: #fff8d9;
+      box-shadow:
+        0 0 40px 20px #f9d71cd8,
+        inset 0 0 85px 28px #f9d71cde,
+        0 0 35px 18px #f2cd1944;
+      animation: flickerLight 2.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 25px #f9d71cdd);
+    }
+    @keyframes flickerLight {
+      0%, 100%   { box-shadow: 0 0 45px 22px #f9d71cff, inset 0 0 90px 30px #f9d71cff, 0 0 38px 20px #f2cd19cc; }
+      50%       { box-shadow: 0 0 36px 19px #f9d71cb7, inset 0 0 75px 25px #f9d71cbf, 0 0 30px 17px #f2cd19aa; }
+    }
+    .light::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 32px;
+      height: 32px;
+      background: radial-gradient(circle, #f9d71c 50%, transparent 85%);
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 1s ease;
+      filter: drop-shadow(0 0 10px #f9d71c);
+    }
+    .light.on::after {
+      opacity: 1;
+    }
+
+    /* Glow background when light is on */
+    body.light-on {
+      background: linear-gradient(160deg, #fff9d3, #f5e085, #f9d71c88, #f9d71caa);
+      animation: glowBackground 4s ease-in-out infinite alternate;
+    }
+    @keyframes glowBackground {
+      0% {
+        background-position: 0% 50%;
+        filter: brightness(1);
+      }
+      50% {
+        background-position: 100% 50%;
+        filter: brightness(1.18);
+      }
+      100% {
+        background-position: 0% 50%;
+        filter: brightness(1);
+      }
+    }
+
+    /* Accessibility and text styling for description */
+    #loginDesc {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #777;
+      font-style: italic;
+      user-select: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="particles" aria-hidden="true"></div>
+  <div class="container" role="main" aria-label="Instagram login form">
+    <div class="logo" aria-label="Instagram logo">Instagram</div>
+    <form id="loginForm" aria-describedby="loginDesc" novalidate>
+      <input
+        type="text"
+        id="username"
+        placeholder="Phone number, username, or email"
+        autocomplete="username"
+        required
+        aria-required="true"
+        aria-label="Username"
+        spellcheck="false"
+      />
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+        aria-required="true"
+        aria-label="Password"
+        spellcheck="false"
+      />
+      <button type="submit" aria-label="Log in to Instagram">Log In</button>
+    </form>
+    <div id="loginDesc">
+      Click "Log In" to toggle the light and background glow on or off.
+    </div>
+    <div class="light-container" aria-live="polite" aria-atomic="true">
+      <div class="light" id="light"></div>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const light = document.getElementById('light');
+    const body = document.body;
+    const particlesContainer = document.querySelector('.particles');
+    let lightOn = false;
+    let particles = [];
+
+    // Utility: create a particle element with random size and position
+    function createParticle() {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      const size = Math.random() * 6 + 3;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      // Random start position inside viewport
+      p.style.top = Math.random() * 100 + '%';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (5 + Math.random() * 10) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      // Random movement direction
+      p.dataset.dir = Math.random() < 0.5 ? 1 : -1;
+      return p;
+    }
+
+    // Animate each particle drifting up and sideways slowly
+    function animateParticles() {
+      particles.forEach((p) => {
+        let top = parseFloat(p.style.top);
+        let left = parseFloat(p.style.left);
+        const dir = parseFloat(p.dataset.dir);
+        top -= 0.04;
+        left += 0.02 * dir;
+        if (top < -1) top = 101;
+        if (left < -1) left = 101;
+        if (left > 101) left = -1;
+        p.style.top = top + '%';
+        p.style.left = left + '%';
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    // Create 50 particles initially
+    function initParticles() {
+      for (let i = 0; i < 50; i++) {
+        const p = createParticle();
+        particlesContainer.appendChild(p);
+        particles.push(p);
+      }
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      lightOn = !lightOn;
+      if (lightOn) {
+        light.classList.add('on');
+        body.classList.add('light-on');
+      } else {
+        light.classList.remove('on');
+        body.classList.remove('light-on');
+      }
+    });
+
+    initParticles();
+    animateParticles();
+  </script>
+</body>
+</html>
+
+
+
+
